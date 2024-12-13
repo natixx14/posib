@@ -1,0 +1,43 @@
+#########################################
+# WORKING DIRECTORIES
+#########################################
+dae_home: ${oc.env:PWD}/../..
+path_generated_data: ${dae_home}/data/generated
+teachers_dir: ${path_generated_data}/teachers
+data_dir: ${path_generated_data}/dataset
+dataset_dir: ${dae_home}/data/raw/huggingface
+tensors_dir: ${path_generated_data}/tensors
+
+#########################################
+# DATASETS & TEACHERS
+#########################################
+
+dae_model_path: ${dae_home}/experiments/train_dae_1T_LIP/models/default
+
+#########################################
+# PARAMETERS
+#########################################
+device: "cuda"
+random_seed: 1
+lr: 1e-4
+epochs: 15
+training_ablation: 1
+batch_size : 64
+preload: True
+pruning_ratio: 0.9
+
+#########################################
+# LOSSES WEIGHTS
+#########################################
+r_pred: 10
+r_uc: 10
+
+#########################################
+# SAVING OPTIONS
+#########################################
+experiment_name: 'default'
+hydra:
+  run:
+    dir: ${dae_model_path}/surrogate/pruning_ratio/${pruning_ratio}
+  sweep:
+    dir: ${dae_model_path}/surrogate/pruning_ratio/${pruning_ratio}

@@ -1,0 +1,53 @@
+#########################################
+# WORKING DIRECTORIES
+#########################################
+dae_home: ${oc.env:PWD}/../..
+path_generated_data: ${dae_home}/data/generated
+teachers_dir: ${path_generated_data}/teachers
+data_dir: ${path_generated_data}/dataset
+
+#########################################
+# DATASETS & TEACHERS
+#########################################
+
+# DAE DATASET
+dataset: "cifar-10" 
+# TEACHER
+teacher: 'resnet18'
+
+#########################################
+# PARAMETERS
+#########################################
+device: "cuda"
+random_seed: 1
+lr: 1e-4
+epochs: 15
+training_ablation: 1
+batch_size : 64
+
+#########################################
+# ARCHITECTURE
+#########################################
+d_latent: 10
+d_shared: 40
+
+#########################################
+# LOSSES WEIGHTS
+#########################################
+r_reconstruct: 1
+r_hsic: 100
+r_pred: 10
+r_lip: 0.0001
+r_norm_regul: 10
+
+#########################################
+# SAVING OPTIONS
+#########################################
+experiment_name: 'default'
+hydra:
+  defaults:
+    - override hydra/launcher: submitit_slurm
+  run:
+    dir: ${dae_home}/experiments/train_dae_1T_LIP/models/${dataset}/${teacher}
+  sweep:
+    dir: ${dae_home}/experiments/train_dae_1T_LIP/models/sweep/dim_shared/${dataset}/${teacher}/${d_shared}
